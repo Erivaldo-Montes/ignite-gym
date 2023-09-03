@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import {
   Center,
   ScrollView,
@@ -18,6 +20,43 @@ const PHOTO_SIZE = 33;
 
 export function Profile() {
   const [PhotoIsLoading, setPhotoIsLoading] = useState(false);
+  const [userPhoto, setUserPhoto] = useState("");
+
+  async function handleUserPhotoSelect() {
+    setPhotoIsLoading(true);
+    try {
+      const userPhotoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+
+      if (userPhotoSelected.canceled) {
+        return;
+      }
+
+      if (userPhotoSelected.assets[0].uri) {
+        const userPhotoSelectedInfo = await FileSystem.getInfoAsync(
+          userPhotoSelected.assets[0].uri
+        );
+
+        if (
+          userPhotoSelectedInfo &&
+          userPhotoSelectedInfo.size / 1024 / 1024 > 5
+        )
+          return Alert.alert(
+            "Essa imagem é muito grande, escolha uma com menos 5MB"
+          );
+        setUserPhoto(userPhotoSelected.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPhotoIsLoading(false);
+    }
+  }
+
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
@@ -33,7 +72,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: "https://github.com/Erivaldo-Montes.png" }}
+              source={{ uri: userPhoto }}
               alt="Foto do perfil"
               size={PHOTO_SIZE}
             />
@@ -46,6 +85,7 @@ export function Profile() {
               fontSize={"md"}
               mt={2}
               mb={8}
+              onPress={handleUserPhotoSelect}
             >
               Alterar foto
             </Text>
