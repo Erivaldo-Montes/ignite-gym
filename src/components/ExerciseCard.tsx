@@ -23,7 +23,7 @@ export function ExerciseCard({ ...rest }: Props) {
           h={16}
           rounded={"md"}
           mr={4}
-          resizeMode="center"
+          resizeMode="cover"
           alt="imagem do exercício"
         />
 
