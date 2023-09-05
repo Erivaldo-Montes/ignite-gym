@@ -9,6 +9,7 @@ import {
   Skeleton,
   Text,
   Heading,
+  useToast,
 } from "native-base";
 
 import { ScreenHeader } from "@components/ScreenHeader";
@@ -21,6 +22,7 @@ const PHOTO_SIZE = 33;
 export function Profile() {
   const [PhotoIsLoading, setPhotoIsLoading] = useState(false);
   const [userPhoto, setUserPhoto] = useState("");
+  const toast = useToast();
 
   async function handleUserPhotoSelect() {
     setPhotoIsLoading(true);
@@ -45,9 +47,12 @@ export function Profile() {
           userPhotoSelectedInfo &&
           userPhotoSelectedInfo.size / 1024 / 1024 > 5
         )
-          return Alert.alert(
-            "Essa imagem é muito grande, escolha uma com menos 5MB"
-          );
+          return toast.show({
+            title: "Essa imagem é muito grande, escolha uma com menos 5MB",
+            placement: "top",
+            bgColor: "red.500",
+          });
+
         setUserPhoto(userPhotoSelected.assets[0].uri);
       }
     } catch (error) {
