@@ -3,6 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+
+import { api } from "@services/api";
 
 import LogoSvg from "@assets/logo.svg";
 import backgroundImage from "@assets/Background.png";
@@ -45,13 +48,27 @@ export function SignUp() {
     navigation.goBack();
   }
 
-  function handleSignUp({
-    name,
-    email,
-    password,
-    password_confirm,
-  }: FormDataProps) {
-    console.log({ name, email, password, password_confirm });
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    try {
+      const response = await api.post("/users", { name, email, password });
+      console.log(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message);
+      }
+    }
+
+    // const response = await fetch("http://10.0.0.104:3333/users", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-type": "application/json",
+    //   },
+    //   body: JSON.stringify({ name, email, password }),
+    // });
+
+    // const data = await response.json();
+    // console.log(data);
   }
   return (
     <ScrollView
