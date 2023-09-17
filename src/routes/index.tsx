@@ -4,8 +4,13 @@ import { useTheme, Box } from "native-base";
 import { AppRoutes } from "./app.routes";
 import { AuthRoute } from "./auth.route";
 
+import { useAuth } from "@hooks/useAuth";
+
 export function Routes() {
   const { colors } = useTheme();
+  const { user } = useAuth();
+
+  console.log("context", user);
 
   const THEME = DefaultTheme;
   THEME.colors.background = colors.gray["700"];
