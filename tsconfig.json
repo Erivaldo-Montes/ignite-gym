@@ -4,8 +4,8 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@dtos/*": [
-        "./src/dtos/*"
+      "@DTOs/*": [
+        "./src/DTOs/*"
       ],
       "@storage/*": [
         "./src/storage/*"
@@ -25,8 +25,8 @@
       "@components/*": [
         "./src/components/*"
       ],
-      "@context/*": [
-        "./src/context/*"
+      "@contexts/*": [
+        "./src/contexts/*"
       ],
       "@routes/*": [
         "./src/routes/*"
