@@ -40,7 +40,6 @@ export function Exercise() {
   function handleGoBack() {
     navigation.goBack();
   }
-
   async function fetchExerciseDetails() {
     try {
       setIsLoading(true);
@@ -60,19 +59,15 @@ export function Exercise() {
       setIsLoading(false);
     }
   }
-
   async function handleExerciseHistoryRegister() {
     try {
       setSendingRegister(true);
-
       await api.post("/history", { exercise_id: exerciseId });
-
       toast.show({
         title: "Exercício registrado com sucesso.",
         placement: "top",
         bgColor: "green.700",
       });
-
       navigation.navigate("history");
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -88,7 +83,6 @@ export function Exercise() {
       setSendingRegister(false);
     }
   }
-
   useEffect(() => {
     fetchExerciseDetails();
     console.log(`${api.defaults.baseURL}/exercise/demo/${exercise.demo}`);
@@ -122,7 +116,6 @@ export function Exercise() {
           </HStack>
         </HStack>
       </VStack>
-
       {isLoading ? (
         <Loading />
       ) : (

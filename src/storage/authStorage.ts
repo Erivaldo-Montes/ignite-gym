@@ -1,10 +1,20 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { AUTH_TOKEN_STORAGE } from "./storageConfig";
 
-export async function createAuthTokenStorage(token: string) {
+type AuthToken = {
+  token: string;
+  refresh_token: string;
+};
+
+export async function createAuthTokenStorage({
+  token,
+  refresh_token,
+}: AuthToken) {
   try {
-    await AsyncStorage.setItem(AUTH_TOKEN_STORAGE, token);
+    await AsyncStorage.setItem(
+      AUTH_TOKEN_STORAGE,
+      JSON.stringify({ token, refresh_token })
+    );
   } catch (error) {
     throw error;
   }
@@ -12,9 +22,12 @@ export async function createAuthTokenStorage(token: string) {
 
 export async function getAuthTokenStorage() {
   try {
-    const token = await AsyncStorage.getItem(AUTH_TOKEN_STORAGE);
+    const response = await AsyncStorage.getItem(AUTH_TOKEN_STORAGE);
+    const { token, refresh_token }: AuthToken = response
+      ? JSON.parse(response)
+      : {};
 
-    return token;
+    return { token, refresh_token };
   } catch (error) {
     throw error;
   }

@@ -16,6 +16,7 @@ import { api } from "@services/api";
 export type AuthContextDataProps = {
   user: UserDTO;
   signIn: (email: string, password: string) => Promise<void>;
+  updateUserProfile: (userUpdated: UserDTO) => Promise<void>;
   signOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
 };
@@ -35,21 +36,22 @@ export function AuthContextProvider({ children }: Props) {
 
   async function userAndTokenUpdate(userData: UserDTO, token: string) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
     setUser(userData);
   }
+
   async function signIn(email: string, password: string) {
     try {
       const { data } = await api.post("/sessions", {
         email,
         password,
       });
-
-      console.log(data.token);
-      if (data.user && data.token) {
+      if (data.user && data.token && data.refresh_token) {
         setIsLoadingUserStorageData(true);
         await createUserStorage(data.user);
-        await createAuthTokenStorage(data.token);
+        await createAuthTokenStorage({
+          token: data.token,
+          refresh_token: data.refresh_token,
+        });
         await userAndTokenUpdate(data.user, data.token);
       }
     } catch (error) {
@@ -78,7 +80,7 @@ export function AuthContextProvider({ children }: Props) {
     try {
       setIsLoadingUserStorageData(true);
       const userLogged = await getUserStorage();
-      const token = await getAuthTokenStorage();
+      const { token } = await getAuthTokenStorage();
       if (token && userLogged) {
         userAndTokenUpdate(userLogged, token);
       }
@@ -89,9 +91,24 @@ export function AuthContextProvider({ children }: Props) {
     }
   }
 
+  async function updateUserProfile(userUpdated: UserDTO) {
+    try {
+      setUser(userUpdated);
+      await createUserStorage(userUpdated);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   useEffect(() => {
     getUserData();
   }, []);
+  useEffect(() => {
+    const subcribe = api.registerInterceptTokenManager(signOut);
+    return () => {
+      subcribe();
+    };
+  }, [signOut]);
   return (
     <AuthContext.Provider
       value={{
@@ -99,6 +116,7 @@ export function AuthContextProvider({ children }: Props) {
         signIn,
         signOut,
         isLoadingUserStorageData,
+        updateUserProfile,
       }}
     >
       {children}

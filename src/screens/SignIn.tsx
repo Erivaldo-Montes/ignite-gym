@@ -53,11 +53,9 @@ export function SignIn() {
       await signIn(email, password);
     } catch (error) {
       const isAppError = error instanceof AppError;
-
       const title = isAppError
         ? error.message
         : "Não foi possível entrar. Tente novamente mais tarde";
-
       setIsLoading(false);
       toast.show({
         title,
