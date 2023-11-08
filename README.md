@@ -26,3 +26,5 @@ já realizado
 
 - para executar você terá que o [android studio](https://developer.android.com) intalado e configurado no computador.
   para configurar android consulte este [documento](https://react-native.rocketseat.dev/).
+
+para que o aplicativo funcione de maneira adequada precisa-se executar a [api](https://github.com/Erivaldo-Montes/ignitegym-api) do projeto na mesma maquina.
