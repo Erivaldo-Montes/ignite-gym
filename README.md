@@ -24,5 +24,5 @@ já realizado
 
 - como a aplicação foi construida usando o expo será necessário executar o expo usando: `npx expo start`
 
-- para executar você terá que o [android studio]('https://developer.android.com') intalado e configurado no computador.
-  para configurar android consulte este [documento]('https://react-native.rocketseat.dev/').
+- para executar você terá que o [android studio](https://developer.android.com) intalado e configurado no computador.
+  para configurar android consulte este [documento](https://react-native.rocketseat.dev/).
