@@ -9,7 +9,7 @@ já realizado
 
 ## tecnologias usadas
 
--[expo]('https://expo.dev/'): O Expo é um framework que facilita o desenvolvimento de aplicativos móveis com React Native. Ele permite que você acesse as APIs nativas do dispositivo sem precisar instalar dependências ou alterar o código nativo.
+- [expo]('https://expo.dev/'): O Expo é um framework que facilita o desenvolvimento de aplicativos móveis com React Native. Ele permite que você acesse as APIs nativas do dispositivo sem precisar instalar dependências ou alterar o código nativo.
 
 [react-native]('https://reactnative.dev/'): O React Native é um framework JavaScript que permite criar aplicativos móveis nativos para iOS e Android usando a mesma base de código.
 
